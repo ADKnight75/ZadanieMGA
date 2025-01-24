@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista zadań</title>
+</head>
+<body>
+    <h1>Lista zadań</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <strong>{{ task.name }}</strong> - {{ task.status }}
+                {% if task.assigned_user %}
+                    (Przypisany użytkownik: {{ task.assigned_user.username }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
