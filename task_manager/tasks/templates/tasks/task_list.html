@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lista Zadań</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f4f4f4;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1>Lista Zadań</h1>
+            <div class="d-flex justify-content-between mb-3">
+                <p class="lead">Poniżej znajduje się lista zadań w systemie.</p>
+                <a href="{% url 'add_task' %}" class="btn btn-success">Dodaj Zadanie</a>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nazwa</th>
+                        <th>Status</th>
+                        <th>Przypisany Użytkownik</th>
+                        <th>Opis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.nazwa }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>{{ task.przypisany_uzytkownik }}</td>
+                        <td>{{ task.opis }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
