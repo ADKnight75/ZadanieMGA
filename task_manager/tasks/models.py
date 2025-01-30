@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -20,6 +21,8 @@ class Task(models.Model):
     Status = models.CharField(db_column='Status', max_length=50, choices=STATUS_CHOICES, default='Nowy', null=False)  # character varying(50) NOT NULL
     Przypisany_uzytkownik = models.CharField(db_column='Przypisany_uzytkownik', max_length=50, choices=USER_CHOICES, blank=True, null=True)  # character varying[] -> JSONField w Django
     Opis = models.TextField(db_column='Opis', blank=True, null=True)  # text
+    
+    history = HistoricalRecords()  # Dodanie historii zmian
 
     class Meta:
         db_table = 'tasks'  # Wskazanie istniejącej tabeli w PostgreSQL

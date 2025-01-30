@@ -4,50 +4,60 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Lista Zadań</title>
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
-            }
-            th {
-                background-color: #f4f4f4;
-            }
-        </style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     </head>
     <body>
         <div class="container mt-5">
             <h1>Lista Zadań</h1>
-            <div class="d-flex justify-content-between mb-3">
-                <p class="lead">Poniżej znajduje się lista zadań w systemie.</p>
-                <a href="{% url 'add_task' %}" class="btn btn-success">Dodaj Zadanie</a>
-            </div>
+            <form method="get" class="mb-3">
+                <div class="row">
+                    <div class="col-md-2">{{ filter_form.ID.label_tag }}{{ filter_form.ID }}</div>
+                    <div class="col-md-2">{{ filter_form.Nazwa.label_tag }}{{ filter_form.Nazwa }}</div>
+                    <div class="col-md-2">{{ filter_form.Status.label_tag }}{{ filter_form.Status }}</div>
+                    <div class="col-md-2">{{ filter_form.Przypisany_uzytkownik.label_tag }}{{ filter_form.Przypisany_uzytkownik }}</div>
+                    <div class="col-md-2">{{ filter_form.Opis.label_tag }}{{ filter_form.Opis }}</div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary mt-4">Filtruj</button>
+                    </div>
+                </div>
+            </form>
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>ID</th>
                         <th>Nazwa</th>
                         <th>Status</th>
                         <th>Przypisany Użytkownik</th>
                         <th>Opis</th>
+                        <th>Opcje</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for task in tasks %}
                     <tr>
-                        <td>{{ task.id }}</td>
-                        <td>{{ task.nazwa }}</td>
-                        <td>{{ task.status }}</td>
-                        <td>{{ task.przypisany_uzytkownik }}</td>
-                        <td>{{ task.opis }}</td>
+                        <td>{{ task.ID }}</td>
+                        <td>{{ task.Nazwa }}</td>
+                        <td>{{ task.Status }}</td>
+                        <td>{{ task.Przypisany_uzytkownik }}</td>
+                        <td>{{ task.Opis }}</td>
+                        <td>
+                            <a href="{% url 'task_detail' task.ID %}" class="btn btn-info btn-sm">Szczegóły</a>
+                            <a href="{% url 'edit_task' task.ID %}" class="btn btn-warning btn-sm">Edytuj</a>
+                            <a href="{% url 'delete_task' task.ID %}" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć to zadanie?');">Usuń</a>
+                            <a href="{% url 'task_history' task.ID %}" class="btn btn-secondary btn-sm">Historia zmian</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">Brak zadań do wyświetlenia.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <!-- Przycisk Dodaj Zadanie -->
+            <div class="text-end mt-3">
+                <a href="{% url 'add_task' %}" class="btn btn-success">Dodaj Zadanie</a>
+            </div>
         </div>
     </body>
 </html>
