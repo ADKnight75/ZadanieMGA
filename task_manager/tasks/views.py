@@ -20,9 +20,9 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def assign(self, request, pk=None):
         task = self.get_object()
-        task.przypisany_uzytkownik = request.user.username
+        task.przypisany_uzytkownik = request.user
         task.save()
-        return Response({'status': 'assigned'})
+        return Response({'status': f"Zadanie przypisane do {request.user.username}"})
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
@@ -84,7 +84,7 @@ def task_list(request):
         if filter_form.cleaned_data.get('status'):
             tasks = tasks.filter(status=filter_form.cleaned_data['status'])
         if filter_form.cleaned_data.get('przypisany_uzytkownik'):
-            tasks = tasks.filter(przypisany_uzytkownik__icontains=filter_form.cleaned_data['przypisany_uzytkownik'])
+            tasks = tasks.filter(przypisany_uzytkownik__id=filter_form.cleaned_data['przypisany_uzytkownik'].id)
 
     return render(request, 'tasks/task_list.html', {'tasks': tasks, 'filter_form': filter_form})
 

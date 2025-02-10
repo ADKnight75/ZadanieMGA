@@ -1,5 +1,6 @@
 from django import forms
 from .models import Task
+from django.contrib.auth.models import User
 
 class TaskForm(forms.ModelForm): # Dodawanie i edycja
     class Meta:
@@ -26,9 +27,10 @@ class TaskFilterForm(forms.Form): # Filtracja
         ],
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    przypisany_uzytkownik = forms.CharField(
-        required=False,
-        label="Użytkownik",
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
+    przypisany_uzytkownik = forms.ModelChoiceField(
+    queryset=User.objects.all(),
+    required=False,
+    label="Użytkownik",
+    widget=forms.Select(attrs={'class': 'form-control'})
+)
     opis = forms.CharField(required=False, label="Opis", widget=forms.TextInput(attrs={'class': 'form-control'}))
