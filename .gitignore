@@ -1,0 +1,6 @@
+# Ignorowanie środowiska wirtualnego
+venv/
+.Venv/
+ENV/
+env/
+.env
