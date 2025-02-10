@@ -2,7 +2,31 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from .models import Task
 from .forms import TaskForm, TaskFilterForm
+from .serializers import TaskSerializer, UserSerializer
 from django.db.models import Q
+from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from django.contrib.auth.models import User
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+    @action(detail=True, methods=['post'])
+    def assign(self, request, pk=None):
+        task = self.get_object()
+        task.Przypisany_uzytkownik = request.user.username
+        task.save()
+        return Response({'status': 'assigned'})
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 def task_history(request, task_id):
     task = get_object_or_404(Task, ID=task_id)

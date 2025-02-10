@@ -13,6 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from decouple import config
 
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=4),  # Token dostępu ważny przez 4 godziny
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token ważny przez 7 dni
+    'ROTATE_REFRESH_TOKENS': True,  # Każde odświeżenie generuje nowy refresh token
+    'BLACKLIST_AFTER_ROTATION': True,  # Stare refresh tokeny nie działają po odświeżeniu
+    'ALGORITHM': 'HS256',  # Domyślny algorytm JWT
+}
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +52,15 @@ INSTALLED_APPS = [
     'simple_history',
     'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
