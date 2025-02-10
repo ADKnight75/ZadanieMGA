@@ -12,23 +12,23 @@
             <table class="table table-bordered">
                 <tr>
                     <th>ID</th>
-                    <td>{{ task.ID }}</td>
+                    <td>{{ task.id }}</td>
                 </tr>
                 <tr>
                     <th>Nazwa</th>
-                    <td>{{ task.Nazwa }}</td>
+                    <td>{{ task.nazwa }}</td>
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ task.Status }}</td>
+                    <td>{{ task.status }}</td>
                 </tr>
                 <tr>
                     <th>Przypisany Użytkownik</th>
-                    <td>{{ task.Przypisany_uzytkownik }}</td>
+                    <td>{{ task.przypisany_uzytkownik }}</td>
                 </tr>
                 <tr>
                     <th>Opis</th>
-                    <td>{{ task.Opis }}</td>
+                    <td>{{ task.opis }}</td>
                 </tr>
             </table>
             <a href="{% url 'task_list' %}" class="btn btn-primary">Powrót do listy zadań</a>

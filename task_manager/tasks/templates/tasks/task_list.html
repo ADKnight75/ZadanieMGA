@@ -11,11 +11,11 @@
             <h1>Lista Zadań</h1>
             <form method="get" class="mb-3">
                 <div class="row">
-                    <div class="col-md-2">{{ filter_form.ID.label_tag }}{{ filter_form.ID }}</div>
-                    <div class="col-md-2">{{ filter_form.Nazwa.label_tag }}{{ filter_form.Nazwa }}</div>
-                    <div class="col-md-2">{{ filter_form.Status.label_tag }}{{ filter_form.Status }}</div>
-                    <div class="col-md-2">{{ filter_form.Przypisany_uzytkownik.label_tag }}{{ filter_form.Przypisany_uzytkownik }}</div>
-                    <div class="col-md-2">{{ filter_form.Opis.label_tag }}{{ filter_form.Opis }}</div>
+                    <div class="col-md-2">{{ filter_form.id.label_tag }}{{ filter_form.id }}</div>
+                    <div class="col-md-2">{{ filter_form.nazwa.label_tag }}{{ filter_form.nazwa }}</div>
+                    <div class="col-md-2">{{ filter_form.status.label_tag }}{{ filter_form.status }}</div>
+                    <div class="col-md-2">{{ filter_form.przypisany_uzytkownik.label_tag }}{{ filter_form.przypisany_uzytkownik }}</div>
+                    <div class="col-md-2">{{ filter_form.opis.label_tag }}{{ filter_form.opis }}</div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-primary mt-4">Filtruj</button>
                     </div>
@@ -35,16 +35,16 @@
                 <tbody>
                     {% for task in tasks %}
                     <tr>
-                        <td>{{ task.ID }}</td>
-                        <td>{{ task.Nazwa }}</td>
-                        <td>{{ task.Status }}</td>
-                        <td>{{ task.Przypisany_uzytkownik }}</td>
-                        <td>{{ task.Opis }}</td>
+                        <td>{{ task.id }}</td>
+                        <td>{{ task.nazwa }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>{{ task.przypisany_uzytkownik }}</td>
+                        <td>{{ task.opis }}</td>
                         <td>
-                            <a href="{% url 'task_detail' task.ID %}" class="btn btn-info btn-sm">Szczegóły</a>
-                            <a href="{% url 'edit_task' task.ID %}" class="btn btn-warning btn-sm">Edytuj</a>
-                            <a href="{% url 'delete_task' task.ID %}" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć to zadanie?');">Usuń</a>
-                            <a href="{% url 'task_history' task.ID %}" class="btn btn-secondary btn-sm">Historia zmian</a>
+                            <a href="{% url 'task_detail' task.id %}" class="btn btn-info btn-sm">Szczegóły</a>
+                            <a href="{% url 'edit_task' task.id %}" class="btn btn-warning btn-sm">Edytuj</a>
+                            <a href="{% url 'delete_task' task.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć to zadanie?');">Usuń</a>
+                            <a href="{% url 'task_history' task.id %}" class="btn btn-secondary btn-sm">Historia zmian</a>
                         </td>
                     </tr>
                     {% empty %}

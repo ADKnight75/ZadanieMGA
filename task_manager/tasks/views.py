@@ -20,7 +20,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def assign(self, request, pk=None):
         task = self.get_object()
-        task.Przypisany_uzytkownik = request.user.username
+        task.przypisany_uzytkownik = request.user.username
         task.save()
         return Response({'status': 'assigned'})
 
@@ -29,7 +29,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 def task_history(request, task_id):
-    task = get_object_or_404(Task, ID=task_id)
+    task = get_object_or_404(Task, id=task_id)
     history = task.history.all().order_by('-history_date')
 
     user_filter = request.GET.get('user')
@@ -39,16 +39,16 @@ def task_history(request, task_id):
     return render(request, 'tasks/task_history.html', {'task': task, 'history': history})
 
 def delete_task(request, task_id):
-    task = get_object_or_404(Task, ID=task_id)
+    task = get_object_or_404(Task, id=task_id)
     task.delete()
     return redirect('task_list')  # Przekierowanie do listy zadań po usunięciu
 
 def task_detail(request, task_id):
-    task = get_object_or_404(Task, ID=task_id)  # Pobiera zadanie lub zwraca 404
+    task = get_object_or_404(Task, id=task_id)  # Pobiera zadanie lub zwraca 404
     return render(request, 'tasks/task_detail.html', {'task': task})
 
 def edit_task(request, task_id):
-    task = get_object_or_404(Task, ID=task_id)
+    task = get_object_or_404(Task, id=task_id)
 
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
@@ -75,16 +75,16 @@ def task_list(request):
     filter_form = TaskFilterForm(request.GET)
 
     if filter_form.is_valid():
-        if filter_form.cleaned_data.get('ID'):
-            tasks = tasks.filter(ID=filter_form.cleaned_data['ID'])
-        if filter_form.cleaned_data.get('Nazwa'):
-            tasks = tasks.filter(Nazwa__icontains=filter_form.cleaned_data['Nazwa'])
-        if filter_form.cleaned_data.get('Opis'):
-            tasks = tasks.filter(Opis__icontains=filter_form.cleaned_data['Opis'])
-        if filter_form.cleaned_data.get('Status'):
-            tasks = tasks.filter(Status=filter_form.cleaned_data['Status'])
-        if filter_form.cleaned_data.get('Przypisany_uzytkownik'):
-            tasks = tasks.filter(Przypisany_uzytkownik__icontains=filter_form.cleaned_data['Przypisany_uzytkownik'])
+        if filter_form.cleaned_data.get('id'):
+            tasks = tasks.filter(id=filter_form.cleaned_data['id'])
+        if filter_form.cleaned_data.get('nazwa'):
+            tasks = tasks.filter(nazwa__icontains=filter_form.cleaned_data['nazwa'])
+        if filter_form.cleaned_data.get('opis'):
+            tasks = tasks.filter(opis__icontains=filter_form.cleaned_data['opis'])
+        if filter_form.cleaned_data.get('status'):
+            tasks = tasks.filter(status=filter_form.cleaned_data['status'])
+        if filter_form.cleaned_data.get('przypisany_uzytkownik'):
+            tasks = tasks.filter(przypisany_uzytkownik__icontains=filter_form.cleaned_data['przypisany_uzytkownik'])
 
     return render(request, 'tasks/task_list.html', {'tasks': tasks, 'filter_form': filter_form})
 
