@@ -50,11 +50,17 @@
 ## Uzyskanie tokena JWT
 Aby korzystać z API, musisz uzyskać token dostępu. 
 ```sh
-   curl -X POST http://127.0.0.1:8000/api/token/ \
-      -H "Content-Type: application/json" \
+   curl -X POST http://127.0.0.1:8000/api/token/ 
+      -H "Content-Type: application/json"
       -d '{"username": "twoj_login", "password": "twoje_haslo"}'
 ```
-W odpowiedzi otrzymasz `access` i `refresh` token.
+W odpowiedzi otrzymasz tokeny JWT do autoryzacji żądań:
+```json
+{
+    "refresh": "TWÓJ_REFRESH_TOKEN",
+    "access": "TWÓJ_ACCESS_TOKEN"
+}
+```
 
 
 ### API
@@ -78,4 +84,51 @@ curl -X DELETE http://127.0.0.1:8000/api/tasks/1/ -H "Authorization: Bearer TWÓ
 ### **Odświeżenie tokena JWT**
 ```sh
 curl -X POST http://127.0.0.1:8000/api/token/refresh/ -H "Content-Type: application/json"  -d '{"refresh": "TWÓJ_REFRESH_TOKEN"}'
+```
+
+## **Dodawanie użytkowników do systemu**
+Jeśli chcesz dodać nowego użytkownika do systemu przez API, użyj:
+```sh
+curl -X POST "http://127.0.0.1:8000/api/register/" 
+     -H "Content-Type: application/json" 
+     -d "{\"username\": \"nowy_user\", \"password\": \"haslo123\", \"email\": \"test@example.com\"}"
+```
+W odpowiedzi otrzymasz potwierdzenie utworzenia użytkownika:
+```json
+{
+    "id": 2,
+    "username": "nowy_user",
+    "email": "test@example.com"
+}
+```
+
+### **Logowanie użytkownika i pobranie tokena JWT**
+Aby zalogować się jako istniejący użytkownik i pobrać token JWT:
+```sh
+curl -X POST "http://127.0.0.1:8000/api/token/" 
+     -H "Content-Type: application/json" 
+     -d "{\"username\": \"nowy_user\", \"password\": \"haslo123\"}"
+```
+
+W odpowiedzi otrzymasz tokeny JWT do autoryzacji żądań:
+```json
+{
+    "refresh": "TWÓJ_REFRESH_TOKEN",
+    "access": "TWÓJ_ACCESS_TOKEN"
+}
+```
+
+## **Uruchamianie aplikacji przy użyciu Gunicorn**
+Gunicorn jest serwerem HTTP przeznaczonym do uruchamiania aplikacji Django w środowisku produkcyjnym.
+
+### **Uruchomienie aplikacji przy użyciu Gunicorn**
+```sh
+gunicorn task_manager.wsgi:application --bind 0.0.0.0:8000
+```
+
+### **Uruchomienie Gunicorn na Windowsie**
+Gunicorn nie działa natywnie na Windowsie, ale można użyć `uvicorn` jako alternatywy:
+```sh
+pip install uvicorn
+uvicorn task_manager.asgi:application --host 0.0.0.0 --port 8000
 ```
