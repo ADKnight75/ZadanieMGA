@@ -8,6 +8,13 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
+from rest_framework import generics
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+
+class RegisterUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = [AllowAny]  # Rejestracja dostępna dla każdego
+    serializer_class = UserSerializer
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -16,6 +23,14 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
+
+    def get_permissions(self):
+        """Definiowanie uprawnień dla różnych metod"""
+        if self.action == 'destroy':  # Tylko administratorzy mogą usuwać
+            self.permission_classes = [IsAdminUser]
+        else:
+            self.permission_classes = [IsAuthenticated]
+        return super().get_permissions()
 
     @action(detail=True, methods=['post'])
     def assign(self, request, pk=None):

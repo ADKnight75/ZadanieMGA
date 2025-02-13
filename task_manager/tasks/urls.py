@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .views import TaskViewSet, UserViewSet
+from .views import TaskViewSet, UserViewSet, RegisterUserView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,6 +20,8 @@ urlpatterns = [
     path('task/<int:task_id>/', views.task_detail, name='task_detail'), # Szczegóły konkretnego zadania
     path('task/delete/<int:task_id>/', views.delete_task, name='delete_task'), # Usuwanie zadania
     path('task/<int:task_id>/history/', views.task_history, name='task_history'), #historia zmian
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Endpointy do obsługi JWT
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), # Logowanie i pobieranie tokena JWT
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Odświeżenie access tokena
+    path('api/auth/', include('rest_framework.urls')),  # Rejestracja użytkowników
+    path('api/register/', RegisterUserView.as_view(), name='register'), # Endpoint rejestracji użytkownika
 ]
